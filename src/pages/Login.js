@@ -1,35 +1,51 @@
-import React, { useState } from 'react';
-import { View, SwitchView, Text, Image, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, KeyboardAvoidingView, Text, Image, StyleSheet, TouchableOpacity, TextInput, Platform} from 'react-native';
+//import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 import api from '../services/api';
 
 import Logo from '../../assets/Icon_empresa.png';
 
+
 export default function Login({ navigation }){
-    const [ email, setEmail] = useState('');
-    const [ senha, setSenha] = useState('');
+    const [ cmailuser, setEmail] = useState('');
+    const [ csenhuser, setSenha] = useState('');
+
+    /*useEffect(() => {
+        const usua = AsyncStorage.getItem('cmailuser');
+        const senh = AsyncStorage.getItem('csenhuser');
+
+        if (usua && senh )  {
+            navigation.navigate('Principal');
+        };
+    }, []);*/
 
     async function handleSubmit() {
-        console.log(email, senha);
-        const response = await api.post('/user/cadastro', {
-            email,
-            senha
+        
+        await api.get('/user/dados', {
+            cmailuser,
+            csenhuser
         })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            console.log(error);
+        });
 
-        const { _id } = response.data;
+        //await AsyncStorage.setItem('cmailuser', cmailuser);
+        //await AsyncStorage.setItem('csenhuser', csenhuser);
 
-        console.log('localizado');
+        navigation.navigate('Principal');
+    };
 
+    async function handleSubmitCadastro() {
         navigation.navigate('Cadastro');
     };
 
-    async function TelaCadastro() {
-        console.log('tela cadastro');
-
-    };
 
     return (
-    <SwitchView style={styles.container}>
+    <KeyboardAvoidingView enabled={Platform.Os === 'ios'} style={styles.container}>
         <Image 
             source={Logo}
             style={styles.logo}
@@ -47,8 +63,8 @@ export default function Login({ navigation }){
                 autoCompleteType="email"
                 autoCapitalize="none"
                 autoCorrect={false}
-                value={email}
-                onChangeText={text => setEmail(text)}
+                value={cmailuser}
+                onChangeText={setEmail}
             />            
         </View>
 
@@ -64,8 +80,8 @@ export default function Login({ navigation }){
                 autoCompleteType="password"
                 autoCapitalize="none"
                 autoCorrect={false}
-                value={senha}
-                onChangeText={text => setSenha(text)}
+                value={csenhuser}
+                onChangeText={setSenha}
             />            
         </View>
 
@@ -76,9 +92,9 @@ export default function Login({ navigation }){
         </TouchableOpacity>
 
         <Text style={styles.labelCadastro}>Ainda não possui cadastro? Crie um 
-            <Text style={styles.labelBold}> clicando aqui</Text>
+            <Text onPress={handleSubmitCadastro}  style={styles.labelBold}> clicando aqui</Text>
         </Text>
-    </SwitchView>
+    </KeyboardAvoidingView>
     );
 }
 

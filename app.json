@@ -4,9 +4,9 @@
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Icon_empresa.png",
+    "icon": "./assets/Icon_Empresa@3x.png",
     "splash": {
-      "image": "./assets/Icon_empresa.png",
+      "image": "./assets/Icon_Empresa@3x.png",
       "resizeMode": "contain",
       "backgroundColor": "#DDE0E1"
     },

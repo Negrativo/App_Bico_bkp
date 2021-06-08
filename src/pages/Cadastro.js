@@ -1,9 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+//import { AsyncStorage } from '@react-native-async-storage/async-storage';
+
+import api from '../services/api';
 
 import Logo from '../../assets/Icon_empresa.png';
 
-export default function Abertura(){
+export default function Abertura({ navigation }){
+
+    const [ cmailuser, setEmail] = useState('');
+    const [ csenhuser, setSenha] = useState('');
+    const [ senha2, setSenha2] = useState('');
+
+    async function handleSubmit() {
+        
+        if (csenhuser === senha2 ){
+            await api.post('/user/cadastro', {
+                cmailuser,
+                csenhuser
+            })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+            //const { _id } = response.data;
+
+            //await AsyncStorage.setItem('cmailuser', cmailuser);
+            //await AsyncStorage.setItem('csenhuser', csenhuser);
+
+            navigation.navigate('Login');
+        };    
+    };
+
     return (
     <View style={styles.container}>
         <Image 
@@ -11,7 +42,7 @@ export default function Abertura(){
             style={styles.logo}
         />
         
-        <Text style={styles.label}>LOGIN</Text>
+        <Text style={styles.label}>E-MAIL</Text>
         <View style={styles.form} >
             <TextInput 
                 style={styles.input}
@@ -23,6 +54,8 @@ export default function Abertura(){
                 autoCompleteType="email"
                 autoCapitalize="none"
                 autoCorrect={false}
+                value={cmailuser}
+                onChangeText={setEmail}
             />            
         </View>
 
@@ -38,6 +71,8 @@ export default function Abertura(){
                 autoCompleteType="password"
                 autoCapitalize="none"
                 autoCorrect={false}
+                value={csenhuser}
+                onChangeText={setSenha}
             />            
         </View>
 
@@ -48,19 +83,29 @@ export default function Abertura(){
                 textAlign="center"
                 textContentType='password'
                 secureTextEntry={true}
-                placeholder="Senha"
+                placeholder="Confirmar Senha"
                 placeholderTextColor="#D9DBDC"
                 autoCompleteType="password"
                 autoCapitalize="none"
                 autoCorrect={false}
+                value={senha2}
+                onChangeText={setSenha2}
             />            
         </View>
 
-        <Text style={styles.labelBold}>Esqueceu sua senha?</Text>
+        
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+            style={styles.button}
+            onPress={handleSubmit}>
             <Text>CADASTRAR</Text>
         </TouchableOpacity>
+
+        <Text style={styles.labelCadastro}>Ao clicar em cadastrar você concorda com os
+            <TouchableOpacity>
+                <Text style={styles.labelBold}>TERMOS DE USO</Text>
+            </TouchableOpacity>
+        </Text>
 
     </View>
     );
