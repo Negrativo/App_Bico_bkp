@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "mobile",
+    "name": "Boosk Emprego",
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Icon_empresa.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Icon_empresa.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#DDE0E1"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
